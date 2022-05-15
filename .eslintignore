@@ -1,0 +1,7 @@
+.next
+**/coverage
+**/node_modules
+**/__snapshots__
+*.config.js
+*.setup.js
+.*lintrc.js

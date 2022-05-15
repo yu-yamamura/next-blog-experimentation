@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          # Use Node.js v16.3.0, which is the same as current local environment.
+          node-version: '16.3.0'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tsc
+        run: npm run type
+      - name: Run ESLint
+        run: npm run lint:es:fix
+      - name: Run Stylelint
+        run: npm run lint:style:fix
+      - name: Run Prettier
+        run: npm run format:fix
+      - name: Run Jest
+        run: npm run test:ci
