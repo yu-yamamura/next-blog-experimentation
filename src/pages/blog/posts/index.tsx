@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { FileNotFoundError } from '@/lib/errors/file-not-found-error';
 import { getAllSlugs, getPostBySlug } from '@/lib/post';
 import { Post } from '@/types/Post';
@@ -7,16 +8,25 @@ type Props = {
   allPosts: (Post | FileNotFoundError)[];
 };
 
-const Blog: NextPage<Props> = ({ allPosts }) =>
+const Posts: NextPage<Props> = ({ allPosts }) =>
   allPosts.length === 0 ? (
     <h1>Sorry, no blog posts found.</h1>
   ) : (
     <>
       {allPosts.some((post) => post instanceof FileNotFoundError) ? null : (
         <ul>
-          {allPosts.map((post) => (
-            <li key={(post as Post).slug}>{(post as Post).title}</li>
-          ))}
+          {allPosts.map((post) => {
+            const { slug, date, title, summary } = post as Post;
+            return (
+              <li key={slug}>
+                <Link href={`posts/${slug}`}>
+                  <a>
+                    {title} ({date}): {summary}
+                  </a>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       )}
     </>
@@ -29,4 +39,4 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
   return { props: { allPosts } };
 };
-export default Blog;
+export default Posts;
