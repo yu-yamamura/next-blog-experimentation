@@ -41,6 +41,7 @@ describe('getPostBySlug', () => {
       draft: false,
       summary: 'A very short summary',
       slug,
+      content: '\nA sample post with markdown.\n',
     };
 
     expect(getPostBySlug(slug)).toEqual(expectedPost);

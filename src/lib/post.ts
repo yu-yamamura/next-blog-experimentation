@@ -21,6 +21,7 @@ export const getPostBySlug = (slug: string): Post | FileNotFoundError => {
   }
   const fileContent = fs.readFileSync(fullPath);
   const matterResult = matter(fileContent);
+  const { content } = matterResult;
 
-  return { slug, ...matterResult.data } as Post;
+  return { slug, content, ...matterResult.data } as Post;
 };
